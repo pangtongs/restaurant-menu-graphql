@@ -79,6 +79,7 @@ test:
 #
 production:
   <<: *default
-  database: restaurant_menu_graphql_production
-  username: restaurant_menu_graphql
-  password: <%= ENV["RESTAURANT_MENU_GRAPHQL_DATABASE_PASSWORD"] %>
+  url: <%= ENV["RESTAURANT_MENU_GRAPHQL_DATABASE_URL"] %>
+  # database: restaurant_menu_l12t
+  # username: restaurant_menu
+  # password: <%= ENV["RESTAURANT_MENU_GRAPHQL_DATABASE_PASSWORD"] %>
