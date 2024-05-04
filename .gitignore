@@ -1,0 +1,9 @@
+db/*.sqlite3
+db/data.yml
+db/*.gz
+db/*.sql
+!db/views/*.sql
+log/*.log
+log/*.Log
+storage/
+tmp/
