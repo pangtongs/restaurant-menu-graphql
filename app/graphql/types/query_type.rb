@@ -1,40 +1,88 @@
-# frozen_string_literal: true
-
 module Types
   class QueryType < Types::BaseObject
-    field :items,
-          [Types::ItemType],
-          null: false,
-          description: "Returns a list of items in the martian library"
+    field :menus, [Types::MenuType], null: false do
+      description "Returns a list of menus"
+    end
+
+    def menus
+      Menu.all
+    end
+
+    field :menu, Types::MenuType, null: true do
+      description "Returns a specific menu by ID"
+      argument :id, ID, required: true
+    end
+
+    def menu(id:)
+      Menu.find_by(id: id)
+    end
+
+    field :sections, [Types::SectionType], null: false do
+      description "Returns a list of sections"
+    end
+
+    def sections
+      Section.all
+    end
+
+    field :section, Types::SectionType, null: true do
+      description "Returns a specific section by ID"
+      argument :id, ID, required: true
+    end
+
+    def section(id:)
+      Section.find_by(id: id)
+    end
+
+    field :items, [Types::ItemType], null: false do
+      description "Returns a list of items"
+    end
 
     def items
       Item.all
     end
 
-    field :node, Types::NodeType, null: true, description: "Fetches an object given its ID." do
-      argument :id, ID, required: true, description: "ID of the object."
+    field :item, Types::ItemType, null: true do
+      description "Returns a specific item by ID"
+      argument :id, ID, required: true
     end
 
-    def node(id:)
-      context.schema.object_from_id(id, context)
+    def item(id:)
+      Item.find_by(id: id)
     end
 
-    field :nodes, [Types::NodeType, null: true], null: true, description: "Fetches a list of objects given a list of IDs." do
-      argument :ids, [ID], required: true, description: "IDs of the objects."
+    field :modifier_groups, [Types::ModifierGroupType], null: false do
+      description "Returns a list of modifier groups"
     end
 
-    def nodes(ids:)
-      ids.map { |id| context.schema.object_from_id(id, context) }
+    def modifier_groups
+      ModifierGroup.all
     end
 
-    # Add root-level fields here.
-    # They will be entry points for queries on your schema.
+    field :modifier_group, Types::ModifierGroupType, null: true do
+      description "Returns a specific modifier group by ID"
+      argument :id, ID, required: true
+    end
 
-    # TODO: remove me
-    field :test_field, String, null: false,
-      description: "An example field added by the generator"
-    def test_field
-      "Hello World!"
+    def modifier_group(id:)
+      ModifierGroup.find_by(id: id)
+    end
+
+    field :modifiers, [Types::ModifierType], null: false do
+      description "Returns a list of modifiers"
+    end
+
+    def modifiers
+      Modifier.all
+    end
+
+    field :modifier, Types::ModifierType, null: true do
+      description "Returns a specific modifier by ID"
+      argument :id, ID, required: true
+    end
+
+    def modifier(id:)
+      Modifier.find_by(id: id)
     end
   end
 end

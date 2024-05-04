@@ -50,6 +50,8 @@ group :development do
   gem "error_highlight", ">= 0.4.0", platforms: [:ruby]
 end
 
+gem "faker"
+
 gem "graphiql-rails", "~> 1.10"
 
 gem "propshaft", "~> 0.8.0"

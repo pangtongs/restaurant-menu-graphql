@@ -10,24 +10,91 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_04_041819) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_04_041828) do
+  create_table "item_modifier_groups", force: :cascade do |t|
+    t.integer "item_id", null: false
+    t.integer "modifier_group_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["item_id"], name: "index_item_modifier_groups_on_item_id"
+    t.index ["modifier_group_id"], name: "index_item_modifier_groups_on_modifier_group_id"
+  end
+
   create_table "items", force: :cascade do |t|
-    t.string "title"
-    t.text "description"
-    t.string "image_url"
-    t.integer "user_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_items_on_user_id"
-  end
-
-  create_table "users", force: :cascade do |t|
-    t.string "first_name"
-    t.string "last_name"
-    t.string "email"
+    t.string "item_type"
+    t.string "identifier"
+    t.string "label"
+    t.string "description"
+    t.float "price"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  add_foreign_key "items", "users"
+  create_table "menu_sections", force: :cascade do |t|
+    t.integer "menu_id", null: false
+    t.integer "section_id", null: false
+    t.integer "display_order", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["menu_id"], name: "index_menu_sections_on_menu_id"
+    t.index ["section_id"], name: "index_menu_sections_on_section_id"
+  end
+
+  create_table "menus", force: :cascade do |t|
+    t.string "identifier"
+    t.string "label"
+    t.string "state"
+    t.date "start_date"
+    t.date "end_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "modifier_groups", force: :cascade do |t|
+    t.string "identifier"
+    t.string "label"
+    t.integer "selection_required_min"
+    t.integer "selection_required_max"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "modifiers", force: :cascade do |t|
+    t.integer "item_id", null: false
+    t.integer "modifier_group_id", null: false
+    t.integer "display_order", default: 0
+    t.integer "default_quantity", default: 0
+    t.float "price_override"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["item_id"], name: "index_modifiers_on_item_id"
+    t.index ["modifier_group_id"], name: "index_modifiers_on_modifier_group_id"
+  end
+
+  create_table "section_items", force: :cascade do |t|
+    t.integer "section_id", null: false
+    t.integer "item_id", null: false
+    t.integer "display_order", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["item_id"], name: "index_section_items_on_item_id"
+    t.index ["section_id"], name: "index_section_items_on_section_id"
+  end
+
+  create_table "sections", force: :cascade do |t|
+    t.string "identifier"
+    t.string "label"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_foreign_key "item_modifier_groups", "items"
+  add_foreign_key "item_modifier_groups", "modifier_groups"
+  add_foreign_key "menu_sections", "menus"
+  add_foreign_key "menu_sections", "sections"
+  add_foreign_key "modifiers", "items"
+  add_foreign_key "modifiers", "modifier_groups"
+  add_foreign_key "section_items", "items"
+  add_foreign_key "section_items", "sections"
 end
